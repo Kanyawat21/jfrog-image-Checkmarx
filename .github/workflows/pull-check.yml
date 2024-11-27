@@ -15,24 +15,6 @@ jobs:
         with:
           repository: 'Checkmarx/ast-cli'
           
-      - name: Build cx binary
-        run: |
-          export GOARCH=amd64
-          export GOOS=linux
-          go build -o ./bin/cx ./cmd
-        env:
-          GOPATH: ${{ github.workspace }}/go
-
-      - name: Verify cx binary
-        run: |
-          if [ ! -f "./bin/cx" ]; then
-            echo "Error: cx binary not created!"
-            exit 1
-          else
-            echo "cx binary created successfully."
-            ls -lh ./bin/cx
-          fi
-
       - name: Set up QEMU 🏗️
         uses: docker/setup-qemu-action@v3.2.0
 
@@ -54,4 +36,4 @@ jobs:
           tags: ${{ secrets.JFROG_URL }}/git-image-checkmarx-docker/ast-cli:latest
           context: .
           build-args: |
-            --no-cache
+            CX_PATH=$(find . -name "cx" | head -n 1)
