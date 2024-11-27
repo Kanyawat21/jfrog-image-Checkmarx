@@ -28,6 +28,15 @@ jobs:
           username: ${{ secrets.JFROG_USERNAME }}
           password: ${{ secrets.JFROG_PASSWORD }}
 
+      - name: สร้างไฟล์ cx
+        run: |
+          if [ ! -f ./cx ]; then
+            echo "สร้างไฟล์ cx"
+            go build -o ./cx ./cmd
+          fi
+          echo "ตรวจสอบตำแหน่งไฟล์ cx:"
+          find . -name "cx" -exec ls -lh {} \;
+      
       - name: Build and push 🐳
         id: docker_build
         uses: docker/build-push-action@v3.2.0
