@@ -33,5 +33,5 @@ jobs:
         uses: docker/build-push-action@v3.2.0
         with:
           push: true
-          tags: ${{ secrets.JFOG_URL }}/git-image-checkmarx-docker/ast-cli:latest
+          tags: ${{ secrets.JFROG_URL }}/git-image-checkmarx-docker/ast-cli:latest
           context: .
