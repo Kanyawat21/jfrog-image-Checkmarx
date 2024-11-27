@@ -24,7 +24,7 @@ jobs:
       - name: Login to JFrog 🐸  
         uses: docker/login-action@v3.3.0
         with:
-          registry: ${{ secrets.JFOG_URL }}
+          registry: ${{ secrets.JFROG_URL }}
           username: ${{ secrets.JFROG_USERNAME }}
           password: ${{ secrets.JFROG_PASSWORD }}
 
@@ -33,5 +33,5 @@ jobs:
         uses: docker/build-push-action@v3.2.0
         with:
           push: true
-          tags: ${{ secrets.JFOG_URL }}.jfrog.io/git-image-checkmarx-docker:latest
+          tags: ${{ secrets.JFOG_URL }}.jfrog.io/git-image-checkmarx-docker/ast-cli:latest
           context: .
