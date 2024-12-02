@@ -36,6 +36,7 @@ jobs:
           fi
           echo "ตรวจสอบตำแหน่งไฟล์ cx:"
           find . -name "cx" -exec ls -lh {} \;
+          echo "CX_PATH=$(find . -name 'cx' | head -n 1)" >> $GITHUB_ENV
       
       - name: Build and push 🐳
         id: docker_build
@@ -45,4 +46,4 @@ jobs:
           tags: ${{ secrets.JFROG_URL }}/git-image-checkmarx-docker/ast-cli:latest
           context: .
           build-args: |
-            CX_PATH=$(find . -name "cx" | head -n 1)
+            CX_PATH=${{ env.CX_PATH }}
