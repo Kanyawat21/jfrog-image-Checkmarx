@@ -69,10 +69,10 @@ jobs:
         run: |
           ls -lh
           
-      # - name: Create ZIP of Checkmarx AST CLI 🗜️
-      #   run: |
-      #     zip -r ast-cli.zip ast-cli/
+      - name: Create ZIP of Checkmarx AST CLI 🗜️
+        run: |
+          zip -r ast-cli.zip .
           
-      # - name: Upload ZIP to JFrog Artifactory 🐙
-      #   run: |
-      #     curl -ukirashiraishi@gmail.com:${{ secrets.JFROG_PASSWORD }} -T ./ast-cli.zip "https://trial4snq1g.jfrog.io/artifactory/checkmarx-cli-generic-local/ast-cli-latest.zip"
+      - name: Upload ZIP to JFrog Artifactory 🐙
+        run: |
+          curl -ukirashiraishi@gmail.com:${{ secrets.JFROG_PASSWORD }} -T ./ast-cli.zip "https://trial4snq1g.jfrog.io/artifactory/checkmarx-cli-generic-local/ast-cli-latest.zip"
