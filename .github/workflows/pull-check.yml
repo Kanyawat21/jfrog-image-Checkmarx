@@ -48,8 +48,7 @@
 #           build-args: |
 #             CX_PATH=${{ env.CX_PATH }}
 
-
-name: zip Checkmarx One
+name: pull Checkmarx One
 
 on:
   push:
@@ -66,10 +65,14 @@ jobs:
         with:
           repository: 'Checkmarx/ast-cli'
 
-      - name: Create ZIP of Checkmarx AST CLI 🗜️
+      - name: Check File Location 🏗️
         run: |
-          zip -r ast-cli.zip ./ast-cli
+          ls -lh
           
-      - name: Upload ZIP to JFrog Artifactory 🐙
-        run: |
-          curl -ukirashiraishi@gmail.com:${{ secrets.JFROG_PASSWORD }} -T ./ast-cli.zip "https://trial4snq1g.jfrog.io/artifactory/checkmarx-cli-generic-local/ast-cli-latest.zip"
+      # - name: Create ZIP of Checkmarx AST CLI 🗜️
+      #   run: |
+      #     zip -r ast-cli.zip ast-cli/
+          
+      # - name: Upload ZIP to JFrog Artifactory 🐙
+      #   run: |
+      #     curl -ukirashiraishi@gmail.com:${{ secrets.JFROG_PASSWORD }} -T ./ast-cli.zip "https://trial4snq1g.jfrog.io/artifactory/checkmarx-cli-generic-local/ast-cli-latest.zip"
