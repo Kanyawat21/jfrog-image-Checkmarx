@@ -1,4 +1,55 @@
-name: pull Checkmarx One
+# name: pull Checkmarx One
+
+# on:
+#   push:
+#     branches:
+#       - main
+
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Checkout 🛎️
+#         uses: actions/checkout@v4.1.6
+#         with:
+#           repository: 'Checkmarx/ast-cli'
+          
+#       - name: Set up QEMU 🏗️
+#         uses: docker/setup-qemu-action@v3.2.0
+
+#       - name: Set up Docker Buildx 🐋
+#         uses: docker/setup-buildx-action@v3.7.1
+
+#       - name: Login to JFrog 🐸  
+#         uses: docker/login-action@v3.3.0
+#         with:
+#           registry: ${{ secrets.JFROG_URL }}
+#           username: ${{ secrets.JFROG_USERNAME }}
+#           password: ${{ secrets.JFROG_PASSWORD }}
+
+#       - name: สร้างไฟล์ cx
+#         run: |
+#           if [ ! -f ./cx ]; then
+#             echo "สร้างไฟล์ cx"
+#             go build -o ./cx ./cmd
+#           fi
+#           echo "ตรวจสอบตำแหน่งไฟล์ cx:"
+#           find . -name "cx" -exec ls -lh {} \;
+#           echo "CX_PATH=$(find . -name 'cx' | head -n 1)" >> $GITHUB_ENV
+      
+#       - name: Build and push 🐳
+#         id: docker_build
+#         uses: docker/build-push-action@v3.2.0
+#         with:
+#           push: true
+#           tags: ${{ secrets.JFROG_URL }}/git-image-checkmarx-docker/ast-cli:latest
+#           context: .
+#           build-args: |
+#             CX_PATH=${{ env.CX_PATH }}
+
+
+name: zip Checkmarx One
 
 on:
   push:
@@ -14,36 +65,11 @@ jobs:
         uses: actions/checkout@v4.1.6
         with:
           repository: 'Checkmarx/ast-cli'
-          
-      - name: Set up QEMU 🏗️
-        uses: docker/setup-qemu-action@v3.2.0
 
-      - name: Set up Docker Buildx 🐋
-        uses: docker/setup-buildx-action@v3.7.1
-
-      - name: Login to JFrog 🐸  
-        uses: docker/login-action@v3.3.0
-        with:
-          registry: ${{ secrets.JFROG_URL }}
-          username: ${{ secrets.JFROG_USERNAME }}
-          password: ${{ secrets.JFROG_PASSWORD }}
-
-      - name: สร้างไฟล์ cx
+      - name: Create ZIP of Checkmarx AST CLI 🗜️
         run: |
-          if [ ! -f ./cx ]; then
-            echo "สร้างไฟล์ cx"
-            go build -o ./cx ./cmd
-          fi
-          echo "ตรวจสอบตำแหน่งไฟล์ cx:"
-          find . -name "cx" -exec ls -lh {} \;
-          echo "CX_PATH=$(find . -name 'cx' | head -n 1)" >> $GITHUB_ENV
-      
-      - name: Build and push 🐳
-        id: docker_build
-        uses: docker/build-push-action@v3.2.0
-        with:
-          push: true
-          tags: ${{ secrets.JFROG_URL }}/git-image-checkmarx-docker/ast-cli:latest
-          context: .
-          build-args: |
-            CX_PATH=${{ env.CX_PATH }}
+          zip -r ast-cli.zip ./ast-cli
+          
+      - name: Upload ZIP to JFrog Artifactory 🐙
+        run: |
+          curl -ukirashiraishi@gmail.com:${{ secrets.JFROG_PASSWORD }} -T ./ast-cli.zip "https://trial4snq1g.jfrog.io/artifactory/checkmarx-cli-generic-local/ast-cli-latest.zip"
